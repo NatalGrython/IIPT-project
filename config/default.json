@@ -1,0 +1,5 @@
+{
+    "PORT":3000,
+    "jwtSecret":"secret strokasd",
+    "mongoURi": "mongodb+srv://Kirill:00271917@cluster0.ogboj.azure.mongodb.net/app?retryWrites=true&w=majority"
+}
