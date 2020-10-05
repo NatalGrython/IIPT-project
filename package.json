@@ -1,0 +1,19 @@
+{
+  "name": "iipt-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NatalGrython/IIPT-project.git"
+  },
+  "author": "Horoshilov K.S.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NatalGrython/IIPT-project/issues"
+  },
+  "homepage": "https://github.com/NatalGrython/IIPT-project#readme"
+}
