@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node app.js",
     "test": "test",
-    "back": "nodemon app.js"
+    "back": "nodemon app.js",
+    "front": "npm run start --prefix client",
+    "dev": "concurrently \"npm run back\" \"npm run front\""
   },
   "repository": {
     "type": "git",
