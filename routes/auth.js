@@ -19,7 +19,10 @@ check('password', 'Мал пароль').isLength({min:6})],
                 errors:errors.array(),
                 message:'Ошибка епта'
             })
+
         }
+
+        console.log(req.body)
 
         const {email, password} = req.body
 
@@ -42,7 +45,7 @@ check('password', 'Мал пароль').isLength({min:6})],
     }
 })
 
-router.post('/registr', 
+router.post('/auto', 
 [check('email', 'Говоно мыло').normalizeEmail().isEmail(),
 check('password', 'Мал пароль').exists()],
  async (req, res) => {

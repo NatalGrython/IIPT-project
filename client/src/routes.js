@@ -10,7 +10,7 @@ export const useRoutes = isAutificated => {
                 <Route path="/mypage" exact>
                     <Mypage />
                 </Route>
-                <Redirect to="/mypage" />
+                    <Redirect to="/mypage" />
             </Switch>
         )
     } else {
