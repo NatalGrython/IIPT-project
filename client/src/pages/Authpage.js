@@ -3,7 +3,7 @@ import { useHttp } from '../hooks/http.hook'
 
 export const Authpage = () => {
 
-    const {request} = useHttp()
+    const {request, loading} = useHttp()
     
     const [form, setForm] = useState({
         email:'',
@@ -20,7 +20,7 @@ export const Authpage = () => {
     const registrHendler = async () => {
         try {
             console.log('==================== REGISTR HENDLER ===========================')
-            const data = await request('http://localhost:5000/api/auth/registr', 'POST', {...form})
+            const data = await request('/api/auth/registr', 'POST', {...form})
             console.log('==================== REGISTR HENDLER END ===========================')
             console.log(data)
         } catch (e) {
@@ -50,7 +50,7 @@ export const Authpage = () => {
                             </div>
                             
                         </form>
-                    <button type="submit" className="btn btn-primary" onClick={registrHendler}>Нажми</button>
+                    <button type="submit" className="btn btn-primary" onClick={registrHendler} disabled = {loading}>Нажми</button>
                 </div>
             </div>
             

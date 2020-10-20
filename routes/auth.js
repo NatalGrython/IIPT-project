@@ -3,51 +3,55 @@ const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const config = require('config')
 const jwt = require('jsonwebtoken')
-const {check, validationResult} = require('express-validator')
+const {body, validationResult} = require('express-validator')
 const router = Router()
 
 
-router.post('/registr', 
-[check('email', 'Говоно мыло').isEmail,
-check('password', 'Мал пароль').isLength({min:6})],
- async (req, res) => {
+router.post(
+    '/registr', 
+[
+    body('email', 'Говоно мыло').isEmail(),
+    body('password', 'Мал пароль').isLength({min:6})
+],
+async (req, res) => {
     try {
+        
+        console.log(req.body)
         const errors = validationResult(req)
         
-        if (!errors.isEmpty) {
+        if (!errors.isEmpty()) {
             return res.status(400).json({
                 errors:errors.array(),
-                message:'Ошибка епта'
+                message:'Ошибка ввденных данных'
             })
 
-        }
-
-        console.log(req.body)
-
-        const {email, password} = req.body
-
-        const candidate = await User.findOne({email})
-
-        if (candidate) {
-            return res.status(400).json({message:'Такой уже есть'})
         } 
 
-        const hash_password = await bcrypt.hash(password)
+        const {email, password} = req.body
+        
+        const candidate = await User.findOne({email})
+        
+        if (candidate) {
+            res.status(400).json({message:'Такой уже есть'})
+        } 
+        const hash_password = await bcrypt.hashSync(password)
         const user = new User({email, password:hash_password})
         await user.save()
-        return res.status(201).json({message:'Зарегали'})
-        
+        res.status(201).json({message:'Зарегали'})
+    
     } catch (e) {
+        console.log(e)
         res.status(500).json({
-            message: 'Ошибка бля'
+            errors: e,
+            message: 'Ошибка промиса'
         })
         
     }
 })
 
 router.post('/auto', 
-[check('email', 'Говоно мыло').normalizeEmail().isEmail(),
-check('password', 'Мал пароль').exists()],
+[body('email', 'Говоно мыло').normalizeEmail().isEmail(),
+body('password', 'Мал пароль').exists()],
  async (req, res) => {
     try {
         const errors = validationResult(req)
@@ -82,7 +86,7 @@ check('password', 'Мал пароль').exists()],
         res.json({token, userId:user.id})
         
     } catch (e) {
-        res.status(500).json({
+        return res.status(500).json({
             message: 'Ошибка бля'
         })
         
