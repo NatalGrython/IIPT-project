@@ -26,6 +26,7 @@ export const useHttp = () => {
             if (!response.ok){ 
                 
                 throw new Error(data.message || 'Ошибка ответа')
+                
             }
             
             setLoading(false)
@@ -40,7 +41,7 @@ export const useHttp = () => {
         }
     }, []) 
 
-    const clearError = () => setError(null)
+    const clearError = useCallback(() => setError(null), []) 
 
     return {loading, request, error, clearError}
 }

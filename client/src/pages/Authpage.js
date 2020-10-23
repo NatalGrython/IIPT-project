@@ -1,14 +1,29 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHttp } from '../hooks/http.hook'
+import { useMessage } from '../hooks/messege.hook'
 
 export const Authpage = () => {
 
-    const {request, loading} = useHttp()
+    const {request, loading, error, clearError} = useHttp()
+    const message = useMessage()
     
     const [form, setForm] = useState({
         email:'',
-        password:''
+        password:'',
+        passwordValid:''
     })
+
+    const [check, setCheck] = useState(false)
+
+    const changeCheck = event => {
+        setCheck(check => !check)
+        console.log(check)
+    }
+
+    useEffect ( () => {
+        message(error)
+        clearError()
+    }, [error, message, clearError])
 
     const changeHandler = event => {
         setForm({
@@ -37,16 +52,20 @@ export const Authpage = () => {
                         <form>
                             <div className="form-group">
                                 <label htmlFor="exampleInputEmail1">Адрес мыла</label>
-                                <input type="email"  className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" name="email"  onChange={changeHandler}/>
-                                <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+                                <input type="email"  className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ты пидор" name="email"  onChange={changeHandler}/>
+                                <small id="emailHelp" className="form-text text-muted">Не дадим ваш пароль никому</small>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInputPassword1">Пароль епта</label>
-                                <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password" name="password" onChange={changeHandler} />
+                                <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Пидор" name="password" onChange={changeHandler} />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="exampleInputPassword1">Второй епта</label>
+                                <input type="password" className="form-control" id="exampleInputPassword2" placeholder="Хуй" name="passwordValid" onChange={changeHandler} />
                             </div>
                             <div className="form-check">
                                 <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-                                <label className="form-check-label" htmlFor="exampleCheck1" style={{marginBottom:"10px"}}>Мне есть 18</label>
+                                <label className="form-check-label" htmlFor="exampleCheck1" onChange = {changeCheck} style={{marginBottom:"10px"}}>Мне есть 18</label>
                             </div>
                             
                         </form>

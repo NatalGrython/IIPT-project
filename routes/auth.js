@@ -11,18 +11,25 @@ router.post(
     '/registr', 
 [
     body('email', 'Говоно мыло').isEmail(),
-    body('password', 'Мал пароль').isLength({min:6})
+    body('password', 'Мал пароль').isLength({min:6}),
+    body('passwordValid', 'Не совпадают пароли').custom((value, {req}) => {
+        if (value != req.body.password) {
+           return false 
+        }
+        return true
+    })
 ],
 async (req, res) => {
     try {
         
         console.log(req.body)
-        const errors = validationResult(req)
+        const errors = validationResult(req).array()
         
-        if (!errors.isEmpty()) {
+        if (!validationResult(req).isEmpty()) {
+            
             return res.status(400).json({
-                errors:errors.array(),
-                message:'Ошибка ввденных данных'
+                errors,
+                message:errors[0].msg
             })
 
         } 
