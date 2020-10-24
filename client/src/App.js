@@ -1,17 +1,24 @@
-import React from 'react'
-import 'materialize-css'
+import React, {useState } from 'react'
 import {BrowserRouter as Router} from 'react-router-dom'
+import { AuthContext } from './component/context'
 import { useRoutes } from './routes'
 
 function App() {
-  const routes = useRoutes(false)
+
+  const [Autificated, getAutificated] = useState(false)
+
+  const routes = useRoutes(Autificated)
+
   return (
-    <Router>
-      <div className="container">
-        {routes}
-      </div>
-    </Router>
-    
+    <AuthContext.Provider value = {{
+      getAutificated
+    }}>
+      <Router>
+        <div className="container">
+          {routes}
+        </div>
+      </Router>
+    </AuthContext.Provider>
   )
 }
 

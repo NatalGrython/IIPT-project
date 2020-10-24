@@ -23,7 +23,7 @@ async function start() {
     }
 }
 
-//start()
+start()
 
 app.use('/api/auth', routes.auth)
 

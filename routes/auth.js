@@ -10,6 +10,7 @@ const router = Router()
 router.post(
     '/registr', 
 [
+    body('checks', 'Нажми мне 18').custom(value => value),
     body('email', 'Говоно мыло').isEmail(),
     body('password', 'Мал пароль').isLength({min:6}),
     body('passwordValid', 'Не совпадают пароли').custom((value, {req}) => {
@@ -42,15 +43,22 @@ async (req, res) => {
             res.status(400).json({message:'Такой уже есть'})
         } 
         const hash_password = await bcrypt.hashSync(password)
-        const user = new User({email, password:hash_password})
+        
+        user = new User({email, password:hash_password})
         await user.save()
-        res.status(201).json({message:'Зарегали'})
+
+        const token = jwt.sign({
+            userId: user.id
+        }, config.get('jwtSecret'),
+         {expiresIn:'1h'})
+
+        res.json({token, userId:user.id})
     
     } catch (e) {
         console.log(e)
         res.status(500).json({
             errors: e,
-            message: 'Ошибка промиса'
+            message: 'Ошибка сервера'
         })
         
     }
