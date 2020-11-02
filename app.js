@@ -7,23 +7,19 @@ const app = express()
 
 app.use(express.json({extended: true}))
 
-async function start() {
-    try {
-        await mongoose.connect(config.get('mongoURi'),{
+mongoose.connect(config.get('mongoURi'),{
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useCreateIndex: true
-
         })
-        
-    }
-    catch(e) {
-        console.log('Error', e.message)
-        process.exit(1)
-    }
-}
+            .then(e => console.log('Подключение к бд установлено'))
+            .catch(e => {
+                console.log('Error= ', e.message)
+            })
 
-start()
+        
+
+
 
 app.use('/api/auth', routes.auth)
 

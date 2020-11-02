@@ -64,8 +64,8 @@ async (req, res) => {
     }
 })
 
-router.post('/auto', 
-[body('email', 'Говоно мыло').normalizeEmail().isEmail(),
+router.post('/login', 
+[body('email', 'Не email').normalizeEmail().isEmail(),
 body('password', 'Мал пароль').exists()],
  async (req, res) => {
     try {
@@ -74,7 +74,7 @@ body('password', 'Мал пароль').exists()],
         if (!errors.isEmpty) {
             return res.status(400).json({
                 errors:errors.array(),
-                message:'Ошибка епта'
+                message:'Ошибка'
             })
         }
 
@@ -86,23 +86,24 @@ body('password', 'Мал пароль').exists()],
             return res.status(400).json('Таких нет')
         }
 
-        const isMatch = await bcrypt.compare(password, user.password)
+        const isMatch = await bcrypt.compareSync(password, user.password)
 
         if (!isMatch) {
 
             return res.status(400).json('Неверный пароль')
-        } 
+        }
 
         const token = jwt.sign({
             userId: user.id
-        }, config.get('jwstSecret'),
+        }, config.get('jwtSecret'),
          {expiresIn:'1h'})
 
         res.json({token, userId:user.id})
         
     } catch (e) {
         return res.status(500).json({
-            message: 'Ошибка бля'
+            errors: e,
+            message: 'Ошибка'
         })
         
     }

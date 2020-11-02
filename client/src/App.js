@@ -1,6 +1,6 @@
 import React, {useState } from 'react'
 import {BrowserRouter as Router} from 'react-router-dom'
-import { AuthContext } from './component/context'
+import { AuthContext } from './context/Authcontext'
 import { useRoutes } from './routes'
 
 function App() {
